@@ -98,7 +98,6 @@ struct Hoc_sinh {
 		return is;
 	}
 	friend ostream& operator<< (ostream& os, Hoc_sinh hoc_sinh) {
-		os << "================================\n";
 		os << "Ten: " << hoc_sinh.name << endl;
 		os << "MSSV: " << hoc_sinh.MSSV << endl;
 		os << "SDT: " << hoc_sinh.sdt << endl;
@@ -168,6 +167,7 @@ void In_ra_DS_sinh_vien(Hoc_sinh*& hoc_sinh, int size) {
 	}
 	else {
 		for (int i = 0; i < size; i++) {
+			cout << "================================\n";
 			cout << hoc_sinh[i];
 		}
 	}
@@ -197,7 +197,7 @@ void Them_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 }
 void Xoa_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 	int n;
-	cout << " Nhap vi tri phan tu can xoa";
+	cout << " Nhap vi tri phan tu can xoa: ";
 	cin >> n;
 	for (int i = n - 1; i < size - 1; i++) {
 		hoc_sinh[i] = hoc_sinh[i + 1];
@@ -214,7 +214,7 @@ void sua_thong_tin(Hoc_sinh*& hoc_sinh, int size) {
 	Hoc_sinh hoc_sinh_tmp;
 	cin >> hoc_sinh_tmp;
 	hoc_sinh[new_n] = hoc_sinh_tmp;
-	cout << "Sua thanh cong ...";
+	cout << "Sua thanh cong ...\n";
 }
 
 void Sap_xep(Hoc_sinh*& hoc_sinh, int size) {
@@ -241,9 +241,9 @@ int Choose() {
 	cout << "7. Tao hoc phan cho sinh vien" << endl;
 	cout << "8. Xoa hoc phan cua sinh vien" << endl;
 	cout << "10.Luu danh sach sinh vien ra file text" << endl;
-	cout << "11.Tao bang diem" << endl;
-	cout << "12.Nhap diem cho sinh vien" << endl;
-	cout << "13.Xem diem sinh vien " << endl;
+	cout << "11.Nhap diem cho sinh vien" << endl;
+	cout << "12.Xem diem sinh vien " << endl;
+	cout << "13.Xuat file diem cua sinh vien" << endl;
 	cout << "0. Thoat" << endl;
 	cout << "Nhap lua chon cua ban\n";
 	cin >> choice;
@@ -282,17 +282,25 @@ int main() {
 			break;
 		case 3:
 			// xoa hoc sinh
+			for (int i = 0; i < size; i++) {
+				cout << i + 1 << " " << hoc_sinh[i].name << endl;
+			}
 			Xoa_hoc_sinh(hoc_sinh, size);
 			break;
 		case 4:
+			//sua thong tin
+			for (int i = 0; i < size; i++) {
+				cout << i + 1 << " " << hoc_sinh[i].name << endl;
+			}
 			sua_thong_tin(hoc_sinh, size);
 			break;
 		case 5:
 			if (n == 5) {
 				string Ten_can_tim;
 				cin.ignore();
-				cout << " Nhap ten ban can tim\n ";
+				cout << "Nhap ten ban can tim: ";
 				getline(cin, Ten_can_tim);
+				chinh_sua_ten(Ten_can_tim);
 				int z = Tim_kiem(hoc_sinh, Ten_can_tim, size);
 				if (z != 0) {
 					cout << hoc_sinh[z - 1];
@@ -333,10 +341,10 @@ int main() {
 				}
 				delete[]diem;
 				diem = a;
-
+				cout << "Bang diem da duoc lap...." << endl;
 			}
-			break;
-		case 12:
+			h = size;
+			g = number;
 			for (int i = 0; i < size; i++) {
 				system("cls");
 				cout << hoc_sinh[i].name << endl;
@@ -347,25 +355,45 @@ int main() {
 					cout << "--------------------------------------" << endl;
 				}
 			}
-		case 13:
+		case 12:
 			system("cls");
 			for (int j = 0; j < size; j++) {
-				float GPA=0;
+				float GPA = 0;
 				cout << hoc_sinh[j].name << endl;
 				for (int i = 0; i < number; i++) {
 					cout << mon_hoc[i].Ma_mon_hoc << " Diem Qua Trinh: " << diem[j][i].GK << "(GK)  Diem cuoi ki: " << diem[j][i].CK << "(CK)   ";
-					diem[j][i].diem_tong_ket(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki); 
-					GPA = GPA +diem[j][i].Quy_doi_thang(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
+					diem[j][i].diem_tong_ket(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
+					GPA = GPA + diem[j][i].Quy_doi_thang(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
 					cout << endl;
 				}
-				cout << "GPA: " << (float)GPA / number<<endl;
+				cout << "GPA: " << (float)GPA / number << endl;
 				cout << "--------------------------------------\n";
 			}
 			break;
-
+		case 13:
+			system("cls");
+			if (n == 14) {
+				for (int i = 0; i < size; i++) {
+					cout << i + 1 << "." << hoc_sinh[i].name << endl;
+				}
+				cout << "Xuat file hoc sinh so may: " << endl;
+				int x;
+				cin >> x;
+				x = x--;
+				fstream hs;
+				hs.open(hoc_sinh[x].name.append(".txt"), ios::out);
+				hs << "Hoc sinh: " << hoc_sinh[x].name << endl;
+				hs << "Mon hoc: " << endl;
+				for (int i = 0; i < number; i++) {
+					hs << mon_hoc[i].Ma_mon_hoc;  hs << "   QT: " << diem[x][i].GK; hs << "  CK: " << diem[x][i].CK;
+					hs << endl;
+				}
+			}
+			break;
 		case 0:
 			cout << " tam biet ban";
-
+			delete[] mon_hoc;
+			delete[] hoc_sinh;
 			return 0;
 			break;
 		default:
@@ -380,11 +408,18 @@ int main() {
 		cout << "(0) de huy\n";
 		cout << "Lua chon la: ";
 		cin >> check;
-		if (check != 1 && check != 0) { goto try_again; }
+		if (check != 1 && check != 0) {
+			system("cls");
+			cout << "Lua chon cua ban khong hop le\n";
+			goto try_again;
+		}
 		if (!check) {
 			cout << " tam biet ban";
 			break;
 		}
 	}
+	delete[]mon_hoc;
+	delete[]hoc_sinh;
 	return 0;
+
 }
