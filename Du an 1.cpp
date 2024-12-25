@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 using namespace std;
+
 void chinh_sua_ten(string& Ho_va_ten) {
 	while (Ho_va_ten[0] == ' ') {
 		Ho_va_ten.erase(0, 1);
@@ -24,6 +25,133 @@ void chinh_sua_ten(string& Ho_va_ten) {
 		}
 	}
 }
+
+struct Birthday {
+	int days;
+	int months;
+	int years;
+
+};
+
+struct Hoc_sinh {
+	string name;
+	int MSSV;
+	string sdt;
+	Birthday DOB;
+	friend istream& operator>> (istream& is, Hoc_sinh& hoc_sinh) {
+		system("cls");
+		cout << " Nhap ten: ";
+		is.ignore();
+		getline(is, hoc_sinh.name);
+		chinh_sua_ten(hoc_sinh.name);
+		cout << " MSSV: ";
+		cin >> hoc_sinh.MSSV;
+		cout << " SDT: ";
+		is.ignore();
+		getline(is, hoc_sinh.sdt);
+		cout << "Nhap ngay thang nam sinh\n";
+		cout << "Ngay: "; cin >> hoc_sinh.DOB.days;
+		cout << "Thang: "; cin >> hoc_sinh.DOB.months;
+		cout << "Nam: "; cin >> hoc_sinh.DOB.years;
+		return is;
+	}
+	friend ostream& operator<< (ostream& os, Hoc_sinh hoc_sinh) {
+		os << "Ten: " << hoc_sinh.name << endl;
+		os << "MSSV: " << hoc_sinh.MSSV << endl;
+		os << "SDT: " << hoc_sinh.sdt << endl;
+		os << "Ngay thang nam sinh: " << hoc_sinh.DOB.days << "/" << hoc_sinh.DOB.months << "/" << hoc_sinh.DOB.years << endl;
+		return os;
+	}
+
+};
+
+void In_ra_DS_sinh_vien(Hoc_sinh*& hoc_sinh, int size) {
+	if (!size) {
+		cout << endl;
+		cout << " chua co hoc sinh nao\n	";
+	}
+	else {
+		for (int i = 0; i < size; i++) {
+			cout << "================================\n";
+			cout << hoc_sinh[i];
+		}
+	}
+	cout << "================================\n";
+
+}
+
+void Them_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
+	Hoc_sinh hoc_sinh_moi;
+	cout << "Nhap thong tin hoc sinh moi" << endl;
+	cin >> hoc_sinh_moi;
+
+	int new_size = size + 1;
+
+	Hoc_sinh* hoc_sinh_tmp = new Hoc_sinh[new_size + 1];
+
+	for (int i = 0; i < size; i++) {
+		hoc_sinh_tmp[i] = hoc_sinh[i];
+
+	}
+
+	hoc_sinh_tmp[new_size - 1] = hoc_sinh_moi;
+	delete[] hoc_sinh;
+	hoc_sinh = hoc_sinh_tmp;
+	size = size + 1;
+	cout << "Them thanh cong ..." << endl;
+
+}
+
+void Xoa_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
+	int n;
+	cout << " Nhap vi tri phan tu can xoa: ";
+	cin >> n;
+	for (int i = n - 1; i < size - 1; i++) {
+		hoc_sinh[i] = hoc_sinh[i + 1];
+
+	}
+	size = size - 1;
+	cout << " Xoa thanh cong ..." << endl;
+}
+
+void sua_thong_tin(Hoc_sinh*& hoc_sinh, int size) {
+	int n;
+	cout << " Nhap vi tri ma ban muon sua thong tin";
+	cin >> n;
+	int new_n = n - 1;
+	Hoc_sinh hoc_sinh_tmp;
+	cin >> hoc_sinh_tmp;
+	hoc_sinh[new_n] = hoc_sinh_tmp;
+	cout << "Sua thanh cong ...\n";
+}
+
+int Tim_kiem(Hoc_sinh*& hoc_sinh, string ten_can_tim, int size) {
+	for (int i = 0; i < size; i++) {
+		int n = ten_can_tim.compare(hoc_sinh[i].name);
+		if (n == 0) {
+			return i + 1;
+		}
+	}
+	return 0;
+
+}
+
+void Sap_xep(Hoc_sinh*& hoc_sinh, int size) {
+	for (int i = size - 1; i > 0; i--) {
+		for (int j = 0; j < i; j++) {
+			if (hoc_sinh[j].MSSV > hoc_sinh[j + 1].MSSV) {
+				swap(hoc_sinh[j], hoc_sinh[j + 1]);
+			}
+		}
+	}
+	cout << " sap xep thanh cong ...";
+}
+
+
+
+
+
+
 
 struct Hoc_phan {
 	string Ma_mon_hoc;
@@ -66,49 +194,28 @@ void Xoa_hoc_phan(Hoc_phan*& mon_hoc, int& number) {
 	}
 	number -= 1;
 }
-struct Birthday {
-	int days;
-	int months;
-	int years;
 
-};
-
-
-
-struct Hoc_sinh {
-	string name;
-	int MSSV;
-	string sdt;
-	Birthday DOB;
-	friend istream& operator>> (istream& is, Hoc_sinh& hoc_sinh) {
-		system("cls");
-		cout << " Nhap ten: ";
-		is.ignore();
-		getline(is, hoc_sinh.name);
-		chinh_sua_ten(hoc_sinh.name);
-		cout << " MSSV: ";
-		cin >> hoc_sinh.MSSV;
-		cout << " SDT: ";
-		is.ignore();
-		getline(is, hoc_sinh.sdt);
-		cout << "Nhap ngay thang nam sinh\n";
-		cout << "Ngay: "; cin >> hoc_sinh.DOB.days;
-		cout << "Thang: "; cin >> hoc_sinh.DOB.months;
-		cout << "Nam: "; cin >> hoc_sinh.DOB.years;
-		return is;
+void In_ra_mon_hoc(Hoc_phan*& mon_hoc, int number) {
+	if (!number) {
+		cout << endl;
+		cout << "chua co mon hoc nao\n";
 	}
-	friend ostream& operator<< (ostream& os, Hoc_sinh hoc_sinh) {
-		os << "Ten: " << hoc_sinh.name << endl;
-		os << "MSSV: " << hoc_sinh.MSSV << endl;
-		os << "SDT: " << hoc_sinh.sdt << endl;
-		os << "Ngay thang nam sinh: " << hoc_sinh.DOB.days << "/" << hoc_sinh.DOB.months << "/" << hoc_sinh.DOB.years << endl;
-		return os;
+	else {
+		for (int i = 0; i < number; i++) {
+			cout << mon_hoc[i].Ma_mon_hoc;
+		}
 	}
 
-};
+}
+
 class Diem_so {
 public:
 	float GK, CK;
+
+	Diem_so() {
+		GK = 0;
+		CK = 0;
+	}
 	void diem_tong_ket(float x, float y) {
 		float m = GK * x + CK * y;
 		cout << "Tong ket: " << m; cout << " Xep Loai: ";
@@ -134,99 +241,6 @@ public:
 		else { return 4; }
 	}
 };
-
-int Tim_kiem(Hoc_sinh*& hoc_sinh, string ten_can_tim, int size) {
-	for (int i = 0; i < size; i++) {
-		int n = ten_can_tim.compare(hoc_sinh[i].name);
-		if (n == 0) {
-			return i + 1;
-		}
-	}
-	return 0;
-
-}
-void In_ra_mon_hoc(Hoc_phan*& mon_hoc, int number) {
-	if (!number) {
-		cout << endl;
-		cout << "chua co mon hoc nao\n";
-	}
-	else {
-		for (int i = 0; i < number; i++) {
-			cout << mon_hoc[i].Ma_mon_hoc;
-		}
-	}
-
-}
-
-
-
-void In_ra_DS_sinh_vien(Hoc_sinh*& hoc_sinh, int size) {
-	if (!size) {
-		cout << endl;
-		cout << " chua co hoc sinh nao\n	";
-	}
-	else {
-		for (int i = 0; i < size; i++) {
-			cout << "================================\n";
-			cout << hoc_sinh[i];
-		}
-	}
-	cout << "================================\n";
-
-}
-void Them_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
-	Hoc_sinh hoc_sinh_moi;
-	cout << "Nhap thong tin hoc sinh moi" << endl;
-	cin >> hoc_sinh_moi;
-
-	int new_size = size + 1;
-
-	Hoc_sinh* hoc_sinh_tmp = new Hoc_sinh[new_size + 1];
-
-	for (int i = 0; i < size; i++) {
-		hoc_sinh_tmp[i] = hoc_sinh[i];
-
-	}
-
-	hoc_sinh_tmp[new_size - 1] = hoc_sinh_moi;
-	delete[] hoc_sinh;
-	hoc_sinh = hoc_sinh_tmp;
-	size = size + 1;
-	cout << "Them thanh cong ..." << endl;
-
-}
-void Xoa_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
-	int n;
-	cout << " Nhap vi tri phan tu can xoa: ";
-	cin >> n;
-	for (int i = n - 1; i < size - 1; i++) {
-		hoc_sinh[i] = hoc_sinh[i + 1];
-
-	}
-	size = size - 1;
-	cout << " Xoa thanh cong ..." << endl;
-}
-void sua_thong_tin(Hoc_sinh*& hoc_sinh, int size) {
-	int n;
-	cout << " Nhap vi tri ma ban muon sua thong tin";
-	cin >> n;
-	int new_n = n - 1;
-	Hoc_sinh hoc_sinh_tmp;
-	cin >> hoc_sinh_tmp;
-	hoc_sinh[new_n] = hoc_sinh_tmp;
-	cout << "Sua thanh cong ...\n";
-}
-
-void Sap_xep(Hoc_sinh*& hoc_sinh, int size) {
-	for (int i = size - 1; i > 0; i--) {
-		for (int j = 0; j < i; j++) {
-			if (hoc_sinh[j].MSSV > hoc_sinh[j + 1].MSSV) {
-				swap(hoc_sinh[j], hoc_sinh[j + 1]);
-			}
-		}
-	}
-	cout << " sap xep thanh cong ...";
-}
 
 int Choose() {
 	int choice;
@@ -262,12 +276,12 @@ int main() {
 		diem[i] = new Diem_so[number];
 	}
 
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < number; j++) {
-			diem[i][j].GK = -1;
-			diem[i][j].CK = -1;
-		}
-	}
+	//for (int i = 0; i < size; i++) {
+	//	for (int j = 0; j < number; j++) {
+	//		diem[i][j].GK = -1;
+	//		diem[i][j].CK = -1;
+	//	}
+	//}
 	while (true) {
 		int n = Choose();
 		switch (n) {
@@ -355,24 +369,28 @@ int main() {
 					cout << "--------------------------------------" << endl;
 				}
 			}
+			break;
 		case 12:
-			system("cls");
-			for (int j = 0; j < size; j++) {
-				float GPA = 0;
-				cout << hoc_sinh[j].name << endl;
-				for (int i = 0; i < number; i++) {
-					cout << mon_hoc[i].Ma_mon_hoc << " Diem Qua Trinh: " << diem[j][i].GK << "(GK)  Diem cuoi ki: " << diem[j][i].CK << "(CK)   ";
-					diem[j][i].diem_tong_ket(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
-					GPA = GPA + diem[j][i].Quy_doi_thang(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
-					cout << endl;
+			if (g != 0 && h != 0) {
+				system("cls");
+				for (int j = 0; j < size; j++) {
+					float GPA = 0;
+					cout << hoc_sinh[j].name << endl;
+					for (int i = 0; i < number; i++) {
+						cout << mon_hoc[i].Ma_mon_hoc << " Diem Qua Trinh: " << diem[j][i].GK << "(GK)  Diem cuoi ki: " << diem[j][i].CK << "(CK)   ";
+						diem[j][i].diem_tong_ket(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
+						GPA = GPA + diem[j][i].Quy_doi_thang(mon_hoc[i].Hs_giua_ki, mon_hoc[i].Hs_cuoi_ki);
+						cout << endl;
+					}
+					cout << "GPA: " << (float)GPA / number << endl;
+					cout << "--------------------------------------\n";
 				}
-				cout << "GPA: " << (float)GPA / number << endl;
-				cout << "--------------------------------------\n";
 			}
+			else { cout << "Ban chua nhap diem cho sinh vien\n"; }
 			break;
 		case 13:
 			system("cls");
-			if (n == 14) {
+			if (n == 13) {
 				for (int i = 0; i < size; i++) {
 					cout << i + 1 << "." << hoc_sinh[i].name << endl;
 				}
@@ -389,6 +407,7 @@ int main() {
 					hs << endl;
 				}
 			}
+			cout << "MISSON COMPLETE :> \n";
 			break;
 		case 0:
 			cout << " tam biet ban";
