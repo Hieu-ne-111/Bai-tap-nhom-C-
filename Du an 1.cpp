@@ -64,6 +64,11 @@ struct Hoc_sinh {
 	}
 
 };
+void In_ra_ten_hoi(Hoc_sinh* hoc_sinh, int size) {
+	for (int i = 0; i < size; i++) {
+		cout <<i+1<<" "<< hoc_sinh[i].name << endl;
+	}
+}
 
 void In_ra_DS_sinh_vien(Hoc_sinh*& hoc_sinh, int size) {
 	if (!size) {
@@ -71,6 +76,7 @@ void In_ra_DS_sinh_vien(Hoc_sinh*& hoc_sinh, int size) {
 		cout << " chua co hoc sinh nao\n	";
 	}
 	else {
+		system("cls");
 		for (int i = 0; i < size; i++) {
 			cout << "================================\n";
 			cout << hoc_sinh[i];
@@ -104,6 +110,7 @@ void Them_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 
 void Xoa_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 	int n;
+	In_ra_ten_hoi(hoc_sinh, size);
 	cout << " Nhap vi tri phan tu can xoa: ";
 	cin >> n;
 	for (int i = n - 1; i < size - 1; i++) {
@@ -116,7 +123,8 @@ void Xoa_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 
 void sua_thong_tin(Hoc_sinh*& hoc_sinh, int size) {
 	int n;
-	cout << " Nhap vi tri ma ban muon sua thong tin";
+	In_ra_ten_hoi(hoc_sinh, size);
+	cout << " Nhap vi tri ma ban muon sua thong tin: ";
 	cin >> n;
 	int new_n = n - 1;
 	Hoc_sinh hoc_sinh_tmp;
@@ -158,7 +166,7 @@ struct Hoc_phan {
 	float Hs_giua_ki, Hs_cuoi_ki;
 	friend istream& operator>> (istream& is, Hoc_phan& mon_hoc) {
 		system("cls");
-		cout << " Nhap ma mon hoc: ";
+		cout << "Nhap ma mon hoc: ";
 		is.ignore();
 		getline(is, mon_hoc.Ma_mon_hoc);
 		cout << "He giua ki: "; cin >> mon_hoc.Hs_giua_ki;
@@ -275,13 +283,6 @@ int main() {
 	for (int i = 0; i < size; i++) {
 		diem[i] = new Diem_so[number];
 	}
-
-	//for (int i = 0; i < size; i++) {
-	//	for (int j = 0; j < number; j++) {
-	//		diem[i][j].GK = -1;
-	//		diem[i][j].CK = -1;
-	//	}
-	//}
 	while (true) {
 		int n = Choose();
 		switch (n) {
@@ -296,16 +297,10 @@ int main() {
 			break;
 		case 3:
 			// xoa hoc sinh
-			for (int i = 0; i < size; i++) {
-				cout << i + 1 << " " << hoc_sinh[i].name << endl;
-			}
 			Xoa_hoc_sinh(hoc_sinh, size);
 			break;
 		case 4:
 			//sua thong tin
-			for (int i = 0; i < size; i++) {
-				cout << i + 1 << " " << hoc_sinh[i].name << endl;
-			}
 			sua_thong_tin(hoc_sinh, size);
 			break;
 		case 5:
