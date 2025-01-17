@@ -1,2 +1,4 @@
 Hoc sinh: Nguyen Huy Hieu.txt
 Mon hoc: 
+GT-1   QT: 2  CK: 1
+DS-1   QT: 10  CK: 9

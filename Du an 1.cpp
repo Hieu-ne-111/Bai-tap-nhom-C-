@@ -93,7 +93,7 @@ void Them_hoc_sinh(Hoc_sinh*& hoc_sinh, int& size) {
 
 	int new_size = size + 1;
 
-	Hoc_sinh* hoc_sinh_tmp = new Hoc_sinh[new_size + 1];
+	Hoc_sinh* hoc_sinh_tmp = new Hoc_sinh[new_size];
 
 	for (int i = 0; i < size; i++) {
 		hoc_sinh_tmp[i] = hoc_sinh[i];
@@ -196,8 +196,7 @@ void Them_hoc_phan(Hoc_phan*& mon_hoc, int& number) {
 void Xoa_hoc_phan(Hoc_phan*& mon_hoc, int& number) {
 	int n;
 	cout << " Nhap vi tri can xoa: "; cin >> n;
-	n = n + 1;
-	for (int i = n + 1; i < number; i++) {
+	for (int i = n - 1; i < number-1; i++) {
 		mon_hoc[i] = mon_hoc[i + 1];
 	}
 	number -= 1;
